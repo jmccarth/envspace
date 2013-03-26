@@ -52,6 +52,9 @@
 
       function init() {
 		//Basemap layers
+		
+		//basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
+		
 		basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer",
 			{displayLevels:[15,16,17,18,19]});
 		
@@ -62,6 +65,7 @@
 			dojo.connect(basemap,"onLoad",addLods);
 		}
 		
+		/*
 		ourbasemap = new esri.layers.ArcGISTiledMapServiceLayer("http://maps.uwaterloo.ca/ArcGIS/rest/services/mobile/uw_base/MapServer",
 			{displayLevels:[20,21]});
 		
@@ -71,6 +75,7 @@
 		else{
 			dojo.connect(ourbasemap,"onLoad",addLods);
 		}
+		*/
 		
 		//Rooms feature layer
 		
@@ -82,7 +87,7 @@
 			"Department Name: ${Department_Name}<br />" +
 			"Area (Assignable Sq. Ft.): ${Assignable_Square_Feet}<br />" +
 			"Usage (IAP): ${Function_ID_and_Name}<br />" +
-			"<a onclick='startEdit(\"${SPACEID}\")'>Edit</a>"
+			"<button onclick='startEdit(\"${SPACEID}\")'>Edit</button>"
 		);
 		
         roomsLayer = new esri.layers.FeatureLayer(roomsLayerURL,{
@@ -124,7 +129,6 @@
 	  }
 	  
 	  function initMap(){
-		
 		var initialExtent = new esri.geometry.Extent({
           "xmin": -8966082.128405,
           "ymin": 5383419.130605,
@@ -140,6 +144,10 @@
 		  infoWindow:popup,
 		  lods: customLods
         });
+		/*map = new esri.Map("map", {
+          extent: initialExtent,
+		  infoWindow:popup
+        });*/
         dojo.connect(map, 'onLoad', function(map) {
           //resize the map when the browser resizes
           dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
@@ -150,7 +158,7 @@
 		})*/
 		
 		map.addLayer(basemap);
-		map.addLayer(ourbasemap)
+		//map.addLayer(ourbasemap);
 		map.addLayer(roomsUpdateLayer);
 		map.addLayer(roomsLayer);
 		
@@ -204,7 +212,7 @@
 		customLods = customLods.concat(lyr.tileInfo.lods);
 		loadCount++;
 
-		if (loadCount === 2) {
+		if (loadCount === 1) {
 		  initMap();
 		}
 	}
@@ -519,7 +527,7 @@
 			</div>
 		</div>
 		
-		<div id="editDialog" data-dojo-type="dijit.Dialog" data-dojo-id="editDialog" title="Edit Feature" style="width:600px;height:600px">
+		<div id="editDialog" data-dojo-type="dijit.Dialog" data-dojo-id="editDialog" title="Edit Feature" style="width:500px;height:300px">
 			<div id="attrInsp"></div>
 		</div>
 		
