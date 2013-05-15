@@ -20,7 +20,7 @@
         parseOnLoad: true
       };
     </script>
-    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.2">
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.4">
     </script>
     <script type="text/javascript">
       dojo.require("dijit.dijit"); // optimize: load dijit layer
@@ -142,7 +142,9 @@
         map = new esri.Map("map", {
           extent: initialExtent,
 		  infoWindow:popup,
-		  lods: customLods
+		  lods: customLods,
+		  minZoom: 17,
+		  maxZoom: 20
         });
 		/*map = new esri.Map("map", {
           extent: initialExtent,
