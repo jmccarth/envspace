@@ -13,6 +13,9 @@
     <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/esri/css/esri.css" />
 	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/2.3/js/esri/dijit/css/Popup.css'/>
 	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
+	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/common/domButtons.css">
+		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
+		<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider']"></script>
     <link rel="stylesheet" type="text/css" href="css/layout.css"/>
 	
     <script type="text/javascript">
@@ -20,28 +23,71 @@
         parseOnLoad: true
       };
     </script>
+	<style>
+		.mblSimpleDialogButton {
+		  margin: 7px 0 0;
+		  width: 262px;
+		  font-size: 17px;
+		  font-weight: bold;
+		  opacity: 0.95;
+		}
+		.mblSimpleDialogButton2l {
+		  float: left;
+		  width: 127px;
+		  margin: 7px 0 0;
+		  font-size: 17px;
+		  font-weight: bold;
+		  opacity: 0.95;
+		}
+		.mblSimpleDialogButton2r {
+		  float: right;
+		  width: 127px;
+		  margin: 7px 0 0;
+		  font-size: 17px;
+		  font-weight: bold;
+		  opacity: 0.95;
+		}
+		.mblSimpleDialog .mblProgressIndicator {
+		  position: relative;
+		  margin: 14px 0 7px;
+		  top: 0;
+		}
+	</style>
     <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.4">
     </script>
     <script type="text/javascript">
-      dojo.require("dijit.dijit"); // optimize: load dijit layer
-      dojo.require("dijit.layout.BorderContainer");
-      dojo.require("dijit.layout.ContentPane");
-	  dojo.require("dijit.TitlePane");
-	  dojo.require("dijit.form.CheckBox");
-	  dojo.require("dijit.form.Select");
-	  
-	  dojo.require("dojox.grid.DataGrid");
-      dojo.require("dojo.data.ItemFileReadStore");
-	  dojo.require("dojox.layout.ExpandoPane");
-	  
-      dojo.require("esri.map");
-	  dojo.require("esri.layers.FeatureLayer");
-	  dojo.require("esri.dijit.Popup");
-	  dojo.require("esri.dijit.Legend");
-	  dojo.require("esri.dijit.AttributeInspector-all");
-	  dojo.require("esri.tasks.GenerateRendererTask");
+		require(["dijit/dijit", // optimize: load dijit layer
+      "dijit/layout/BorderContainer",
+      "dijit/layout/ContentPane",
+	  "dijit/TitlePane",
+	  "dijit/form/CheckBox",
+	  "dijit/form/Select",
+	  "dijit/registry",
+	  "dijit/Menu",
+	  "dijit/Dialog",
+	  "dijit/Calendar",
+	  "dijit/form/DropDownButton",
+	  "dojox/grid/DataGrid",
+      "dojo/data/ItemFileReadStore",
+	  "dojox/layout/ExpandoPane",
+	  "dojox/mobile/Button",
+	  "dojox/mobile/SimpleDialog",
+      "esri/map",
+	  "esri/layers/FeatureLayer",
+	  "esri/dijit/Popup",
+	  "esri/dijit/Legend",
+	  "esri/dijit/AttributeInspector-all",
+	  "esri/tasks/GenerateRendererTask"
+		],function(registry){
+				show = function(dlg){
+					registry.byId(dlg).show();
+				};
+				hide = function(dlg){
+					registry.byId(dlg).hide();
+				};
+			}
+		);
       
-	  require(["dijit/form/DropDownButton","dijit/Menu","dijit/Calendar","dijit/Dialog"]);
 	  
       var map, roomsLayer, roomsUpdateLayer, basemap;
 	  var legend = null;
@@ -305,7 +351,7 @@
 	*/
 	function changeFloor(floorNum){
 		roomsLayer.setDefinitionExpression("FLOORKEY LIKE '%F" + floorNum + "'");
-		dijit.byId("floorButton").set("label","Floor " + floorNum);
+		//dijit.byId("floorButton").set("label","Floor " + floorNum);
 		map.infoWindow.hide();
 	}
 
@@ -337,22 +383,24 @@
 				}
 			}
 			
-			var dList = dijit.byId("deptList");
+			//var dList = dijit.byId("deptList");
 			for (dept in uniqueDepts){
 				deptName = uniqueDepts[dept];
-				dList.addOption({
+				dojo.byId("deptList").options.add(new Option(deptName,deptName));
+				/*dList.addOption({
 					label:deptName,
 					value:deptName
-				});
+				});*/
 			}
 			
-			var fList = dijit.byId("funcList");
+			//var fList = dijit.byId("funcList");
 			for (func in uniqueFuncs){
 				funcName = uniqueFuncs[func];
-				fList.addOption({
+				dojo.byId("funcList").options.add(new Option(funcName,funcName));
+				/*fList.addOption({
 					label:funcName,
 					value:funcName
-				});
+				});*/
 			}
 		});
 	}
@@ -363,52 +411,58 @@
 	  function generateReport(){
 		var deptName;
 		var funcName;
-		var showASF = dijit.byId("asfCheck").get("checked");
+		var showASF = dojo.byId("asfCheck").checked;
+		var deptChecked = dojo.byId("byDeptCheck").checked;
+		var funcChecked = dojo.byId("byFuncCheck").checked;
 		
-		var byDept = new esri.tasks.Query();
-		var byDeptTask = new esri.tasks.QueryTask(roomsLayerURL);
-		
-		byDept.where = "";
-		
-		if (dijit.byId("byDeptCheck").get("checked")){
-			deptName = dijit.byId("deptList").get("value");
-			byDept.where += "Department_Name = '" + deptName + "'";
-		}
-		if (dijit.byId("byFuncCheck").get("checked")){
-			funcName = dijit.byId("funcList").get("value");
-			if (byDept.where.length > 0){
-				byDept.where += " AND Function_ID_and_Name = '" + funcName + "'";
+		if(deptChecked || funcChecked){
+			var byDept = new esri.tasks.Query();
+			var byDeptTask = new esri.tasks.QueryTask(roomsLayerURL);
+			
+			byDept.where = "";
+			
+			if (dojo.byId("byDeptCheck").checked){
+				deptName = dojo.byId("deptList").value;
+				byDept.where += "Department_Name = '" + deptName + "'";
 			}
-			else{
-				byDept.where += "Function_ID_and_Name = '" + funcName + "'";
-			}
-		}
-		
-		byDept.outFields = ["*"];
-		byDeptTask.execute(byDept,function(featureSet){
-			var totalSpace = 0;
-			for (room in featureSet.features){
-				totalSpace += featureSet.features[room].attributes.Assignable_Square_Feet
+			if (dojo.byId("byFuncCheck").checked){
+				funcName = dojo.byId("funcList").value;
+				if (byDept.where.length > 0){
+					byDept.where += " AND Function_ID_and_Name = '" + funcName + "'";
+				}
+				else{
+					byDept.where += "Function_ID_and_Name = '" + funcName + "'";
+				}
 			}
 			
-			var items = dojo.map(featureSet.features,function(feature){
-              return feature.attributes;
-            });
-            var data = {
-              identifier:"OBJECTID",
-              items:items};
-            store = new dojo.data.ItemFileReadStore({data:data});
-            grid.setStore(store);
-            grid.setSortIndex(1,"true");
-			
-			if (showASF){
-				alert("Total Assignable Square Feet is:" + totalSpace);
-			}
+			byDept.outFields = ["*"];
+			byDeptTask.execute(byDept,function(featureSet){
+				var totalSpace = 0;
+				for (room in featureSet.features){
+					totalSpace += featureSet.features[room].attributes.Assignable_Square_Feet
+				}
+				
+				var items = dojo.map(featureSet.features,function(feature){
+				  return feature.attributes;
+				});
+				var data = {
+				  identifier:"OBJECTID",
+				  items:items};
+				store = new dojo.data.ItemFileReadStore({data:data});
+				grid.setStore(store);
+				grid.setSortIndex(1,"true");
+				
+				if (showASF){
+					alert("Total Assignable Square Feet is:" + totalSpace);
+				}
 
-			
-		});
-		reportDialog.hide();
-		
+				
+			});
+			hide('reportDialog');
+		}
+		else{
+			alert("You must select at least one department or one function");
+		}
 	  }
 
 	  
@@ -464,6 +518,18 @@
 		});
       }
 	
+	function visualize(vizType){
+		if (vizType == "byDept"){
+			symbolizeByDepartment();
+		}
+		else if (vizType == "byFunc"){
+			symbolizeByFunction();
+		}
+		else if (vizType == "default"){
+			symbolizeDefault();
+		}
+	}
+	
 	function clear(){
 		roomsLayer.clearSelection();
 		map.infoWindow.hide();
@@ -479,34 +545,30 @@
 			<!-- CENTER -->
 			<div id="map" class="centerPanel" dojotype="dijit.layout.ContentPane" region="center">
 				<div id="floatTools" style="position:absolute; left:700px; top:10px; z-Index:999;">
-					<div id="floorButton" data-dojo-type="dijit.form.DropDownButton" label="Floor 1">
-						<div data-dojo-type="dijit.Menu">
-							<div data-dojo-type="dijit.MenuItem" onClick="changeFloor(1)">1</div>
-							<div data-dojo-type="dijit.MenuItem" onClick="changeFloor(2)">2</div>
-							<div data-dojo-type="dijit.MenuItem" onClick="changeFloor(3)">3</div>
-							<div data-dojo-type="dijit.MenuItem" onClick="changeFloor(4)">4</div>
-						</div>
-					</div>
-					<div data-dojo-type="dijit.form.DropDownButton">
+					<select id="floorButton" onChange="changeFloor(this.value)">		
+						<option value="1">Floor 1</option>
+						<option value="2">Floor 2</option>
+						<option value="3">Floor 3</option>
+						<option value="4">Floor 4</option>
+					</select>
+					<select onChange="visualize(this.value)">
+						<option value="default">Symbolize Default</option>
+						<option value="byDept">Symbolize By Department</option>
+						<option value="byFunc">Symbolize By Function</option>
+					</select>
+					<!--<div data-dojo-type="dijit.form.DropDownButton">
 						<span>Choose Date</span>
 						<div data-dojo-type="dijit.Menu">
 							<div data-dojo-type="dijit.Calendar"></div>
 						</div>
-					</div>
-					<div data-dojo-type="dijit.form.Button" label="Report" onclick="reportDialog.show()">
-					</div>
-					<div data-dojo-type="dijit.form.DropDownButton">
-						<span>Vizualize</span>
-						<div data-dojo-type="dijit.Menu">
-							<div data-dojo-type="dijit.MenuItem" onClick="symbolizeByDepartment()">By Department</div>
-							<div data-dojo-type="dijit.MenuItem" onClick="symbolizeByFunction()">By Function</div>
-							<div data-dojo-type="dijit.MenuItem" onClick="symbolizeDefault()">Default</div>
-						</div>
-					</div>
-					<div data-dojo-type="dijit.form.Button" label="Clear" onclick="clear()">
-					</div>
+					</div>-->
+					
+					<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')">Report</button>
+					
+					
+					<button data-dojo-type="dojox.mobile.Button" onclick="clear()">Clear</button>
 				</div>
-				<div dojotype="dijit.TitlePane" style="position:absolute; left:20px; bottom:10px; z-Index:999; height:300px; width: 200px; overflow:auto" title="Legend">
+				<div style="position:absolute; left:20px; bottom:10px; z-Index:999; height:300px; width: 200px; overflow:auto" title="Legend">
 					<div style="overflow:auto">
 						<div id="legendDiv"></div>
 					</div>
@@ -533,18 +595,25 @@
 			<div id="attrInsp"></div>
 		</div>
 		
-		<div id="reportDialog" data-dojo-type="dijit.Dialog" data-dojo-id="reportDialog" title="Generate a Report" style="width:600px">
-			<input id="byDeptCheck" data-dojo-type="dijit.form.CheckBox" checked onclick='dijit.byId("deptList").set("disabled",!dijit.byId("deptList").get("disabled"))'/><label for="byDeptCheck">By Department</label>
-			<div id="deptList" data-dojo-type="dijit.form.Select"></div>
+		<div id="reportDialog" data-dojo-type="dojox.mobile.SimpleDialog" data-dojo-props="closeButton:true">
+			<div class="mblSimpleDialogTitle">Generate a Report</div>
+			<input type="checkbox" id="byDeptCheck" checked onclick='dojo.byId("deptList").disabled = !dojo.byId("byDeptCheck").checked'/>
+			<span class="mblSimpleDialogText">By Department</span>
+			<select id="deptList" style="width:90%">
+			</select>
 			<br />
-			<input id="byFuncCheck" data-dojo-type="dijit.form.CheckBox" checked onclick='dijit.byId("funcList").set("disabled",!dijit.byId("funcList").get("disabled"))'/><label for="byFuncCheck">By Function</label>
-			<div id="funcList" data-dojo-type="dijit.form.Select"></div>
+			<br />			
+			<input type="checkbox" id="byFuncCheck" checked onclick='dojo.byId("funcList").disabled = !dojo.byId("byFuncCheck").checked'/>
+			<span class="mblSimpleDialogText">By Function</span>
+			<select id="funcList" style="width:90%">
+			</select>
 			<br />
-			<input id="asfCheck" data-dojo-type="dijit.form.CheckBox" checked /><label for="asfCheck">Show ASF Total?</label>
 			<br />
-			<button data-dojo-type="dijit.form.Button" type="button" onclick="generateReport()">
-				Generate Report
-			</button>
+			<input type="checkbox" id="asfCheck" checked />
+			<span class="mblSimpleDialogText">Show ASF Total?</span>
+			<br />
+			<br />
+			<button data-dojo-type="dojox.mobile.Button" onclick="generateReport()">Generate Report</button>
 		</div>
 		<div id="legendDialog" data-dojo-type="dijit.Dialog" data-dojo-id="legendDialog"></div>
 	</body>
