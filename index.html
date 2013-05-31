@@ -5,17 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7" />
     <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
       on iOS devices-->
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     
     <title>
     </title>
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/dojo/dijit/themes/tundra/tundra.css">
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/esri/css/esri.css" />
-	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/2.3/js/esri/dijit/css/Popup.css'/>
-	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.2/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css" />
+	
+	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/dijit/css/Popup.css'/>
+	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
 	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/common/domButtons.css">
-		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
-		<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider']"></script>
+	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
+	<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider','Accordion']"></script>
     <link rel="stylesheet" type="text/css" href="css/layout.css"/>
 	
     <script type="text/javascript">
@@ -52,6 +55,7 @@
 		  margin: 14px 0 7px;
 		  top: 0;
 		}
+
 	</style>
     <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.4">
     </script>
@@ -70,8 +74,12 @@
 	  "dojox/grid/DataGrid",
       "dojo/data/ItemFileReadStore",
 	  "dojox/layout/ExpandoPane",
+	  "dojox/mobile",
+	  "dojox/mobile/parser",
 	  "dojox/mobile/Button",
 	  "dojox/mobile/SimpleDialog",
+	  "dojox/mobile/Accordion",
+	  "dojox/mobile/ContentPane",
       "esri/map",
 	  "esri/layers/FeatureLayer",
 	  "esri/dijit/Popup",
@@ -271,6 +279,7 @@
 		Build a colour ramp and apply it to the rooms layer, then refresh.
 	*/	
 	function symbolizeByDepartment(){
+		dojo.byId("legendDiv").hidden = false; //make sure legend is visible
 		var generateRenderer = new esri.tasks.GenerateRendererTask(roomsLayerURL);
 		var params = new esri.tasks.GenerateRendererParameters();
 		
@@ -303,6 +312,7 @@
 	*/	
 	
 	function symbolizeByFunction(){
+		dojo.byId("legendDiv").hidden = false; //make sure legend is visible
 		var generateRenderer = new esri.tasks.GenerateRendererTask(roomsLayerURL);
 		var params = new esri.tasks.GenerateRendererParameters();
 		
@@ -340,6 +350,7 @@
 		roomsLayer.setRenderer(renderer);
 		roomsLayer.refresh();
 		legend.refresh();
+		dojo.byId("legendDiv").hidden = true; //hide legend when there's only one symbol
 	 }
 	  
 	/**
@@ -541,43 +552,35 @@
   </head>
   
 	<body class="tundra">
-		<div id="mainWindow" dojotype="dijit.layout.BorderContainer" design="sidebar" liveSplitters="true" style="width:100%; height:100%;">
-			<!-- CENTER -->
-			<div id="map" class="centerPanel" dojotype="dijit.layout.ContentPane" region="center">
-				<div id="floatTools" style="position:absolute; left:700px; top:10px; z-Index:999;">
-					<select id="floorButton" onChange="changeFloor(this.value)">		
-						<option value="1">Floor 1</option>
-						<option value="2">Floor 2</option>
-						<option value="3">Floor 3</option>
-						<option value="4">Floor 4</option>
-					</select>
-					<select onChange="visualize(this.value)">
-						<option value="default">Symbolize Default</option>
-						<option value="byDept">Symbolize By Department</option>
-						<option value="byFunc">Symbolize By Function</option>
-					</select>
-					<!--<div data-dojo-type="dijit.form.DropDownButton">
-						<span>Choose Date</span>
-						<div data-dojo-type="dijit.Menu">
-							<div data-dojo-type="dijit.Calendar"></div>
-						</div>
-					</div>-->
-					
-					<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')">Report</button>
-					
-					
-					<button data-dojo-type="dojox.mobile.Button" onclick="clear()">Clear</button>
-				</div>
-				<div style="position:absolute; left:20px; bottom:10px; z-Index:999; height:300px; width: 200px; overflow:auto" title="Legend">
-					<div style="overflow:auto">
-						<div id="legendDiv"></div>
-					</div>
+		
+		<div id="map" data-dojo-type="dojox/mobile/ContentPane" style="height:75%" data-dojo-props="label:'Map'">
+
+			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:15px; z-Index:1;">		
+				<option value="1">Floor 1</option>
+				<option value="2">Floor 2</option>
+				<option value="3">Floor 3</option>
+				<option value="4">Floor 4</option>
+			</select>
+			<select onChange="visualize(this.value)" style="position:absolute; right:15px; top:55px; z-Index:1;">
+				<option value="default">Symbolize Default</option>
+				<option value="byDept">Symbolize By Department</option>
+				<option value="byFunc">Symbolize By Function</option>
+			</select>
+			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; z-Index:1;">Report</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; z-Index:1;">Clear</button>
+
+
+			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
+				<div style="overflow:auto">
+					<div id="legendDiv"></div>
 				</div>
 			</div>
 			
-			<!-- BOTTOM -->
-			<div id="footer" title="Results" class="edgePanel" dojotype="dojox.layout.ExpandoPane" region="bottom" style="height:20%;" splitter="true">
-				<table data-dojo-type="dojox.grid.DataGrid" id="grid" jsid="grid">
+		</div>
+		
+		<div data-dojo-type="dojox/mobile/Accordion" style="height:25%">
+			<div data-dojo-type="dojox/mobile/ContentPane" style="height:100%" selected="true" data-dojo-props="label:'Report'">						
+				<table data-dojo-type="dojox.grid.DataGrid" id="grid" jsid="grid" style="font-size: 12px;">
 					<thead>
 						<tr>
 							<th field="OBJECTID" formatter="zoomTo" width="5%">Zoom To</th>
@@ -589,7 +592,9 @@
 					</thead>
 				</table>
 			</div>
-		</div>
+		</div>		
+
+
 		
 		<div id="editDialog" data-dojo-type="dijit.Dialog" data-dojo-id="editDialog" title="Edit Feature" style="width:500px;height:300px">
 			<div id="attrInsp"></div>
@@ -616,5 +621,6 @@
 			<button data-dojo-type="dojox.mobile.Button" onclick="generateReport()">Generate Report</button>
 		</div>
 		<div id="legendDialog" data-dojo-type="dijit.Dialog" data-dojo-id="legendDialog"></div>
+
 	</body>
 </html>
