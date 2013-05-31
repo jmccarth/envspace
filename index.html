@@ -547,6 +547,28 @@
 		}
 	}
 	
+	function exportCSV(){
+		if (store == undefined){
+			alert("run a report first!");
+		}
+		else{
+			var csvoutput = "";
+			store.fetch({
+				onComplete: function(items){
+					//Open and populate an html document (pop-up)
+					
+					csvoutput += "Room,Department,Function,Assignable Square Feet\n";
+					//iterate over items to build the table content
+					dojo.forEach(items, function(item,index){
+						csvoutput += item.LONGNAME + "," + item.Department_Name + "," + item.Function_ID_and_Name + "," + item.Assignable_Square_Feet + "\n";
+					});
+					
+				}
+			});
+			location.href='data:application/download,' + encodeURIComponent(csvoutput);
+		}
+	}
+	
 	/**
 	 * printReport()
 	 * 
@@ -613,6 +635,7 @@
 			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; width:60px; z-Index:1;">Report</button>
 			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; width:52px; z-Index:1;">Clear</button>
 			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">Print Report</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="exportCSV()" style="position:absolute; right:15px; top:225px; width:91px; z-Index:1;">Export CSV</button>
 
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
@@ -620,7 +643,6 @@
 					<div id="legendDiv"></div>
 				</div>
 			</div>
-			
 		</div>
 		
 		<div data-dojo-type="dojox/mobile/Accordion" style="height:25%">
