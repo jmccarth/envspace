@@ -386,18 +386,23 @@
 			var uniqueDepts = [];
 			var uniqueFuncs = [];
 			for (room in results.features){
-				if (uniqueDepts.indexOf(results.features[room].attributes["Department_Name"]) == -1){
+				if (dojo.indexOf(uniqueDepts,results.features[room].attributes["Department_Name"]) == -1){
 					uniqueDepts.push(results.features[room].attributes["Department_Name"]);
 				}
 				
-				if (uniqueFuncs.indexOf(results.features[room].attributes["Function_ID_and_Name"]) == -1){
+				if (dojo.indexOf(uniqueFuncs,results.features[room].attributes["Function_ID_and_Name"]) == -1){
 					uniqueFuncs.push(results.features[room].attributes["Function_ID_and_Name"]);
 				}
 			}
 			
 			//var dList = dijit.byId("deptList");
+			var dList = dojo.byId("deptList");
 			for (dept in uniqueDepts){
 				deptName = uniqueDepts[dept];
+				//var o = document.createElement("option");
+				//o.label = deptName;
+				//o.value = deptName;
+				//dList.add(o,null);
 				dojo.byId("deptList").options.add(new Option(deptName,deptName));
 				/*dList.addOption({
 					label:deptName,
@@ -605,9 +610,9 @@
 				<option value="byDept">Symbolize By Department</option>
 				<option value="byFunc">Symbolize By Function</option>
 			</select>
-			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; z-Index:1;">Report</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; z-Index:1;">Clear</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; z-Index:1;">Print Report</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; width:60px; z-Index:1;">Report</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; width:52px; z-Index:1;">Clear</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">Print Report</button>
 
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
