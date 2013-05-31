@@ -101,6 +101,7 @@
 	  var legend = null;
 	  var customLods = [];
 	  var loadCount = 0;
+	  var store; //holds data store for dojo data grid (report)
 	  var roomsLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/0";
 	  var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/0";
 
@@ -541,6 +542,44 @@
 		}
 	}
 	
+	/**
+	 * printReport()
+	 * 
+	 * Creates and prints a copy of the table in the report datagrid
+	 * User must allow popups for this to work  
+	 */
+	function printReport(){
+		if (store == undefined){
+			alert("run a report first!");
+		}
+		else{
+			var win = window.open();
+			self.focus();
+			
+			store.fetch({
+				onComplete: function(items){
+					//Open and populate an html document (pop-up)
+					win.document.open();
+					win.document.write('<'+'html'+'><'+'head'+'><'+'style'+'>');
+			    	win.document.write('body, td { font-family: Verdana; font-size: 9pt;}');
+			    	win.document.write('<'+'/'+'style'+'><'+'/'+'head'+'><'+'body'+'>');
+					win.document.write("<table style='width:100%'><th>Room</th><th>Department</th><th>Function</th><th>Assignable Square Feet</th>");
+					
+					//iterate over items to build the table content
+					dojo.forEach(items, function(item,index){
+						win.document.write("<tr><td>" + item.LONGNAME + "</td><td>" + item.Department_Name + "</td><td>" + item.Function_ID_and_Name + "</td><td>" + item.Assignable_Square_Feet + "</td></tr>");
+					});
+					
+					win.document.write("</table>");
+					win.document.write('<'+'/'+'body'+'><'+'/'+'html'+'>');
+					win.document.close();
+					win.print();
+					win.close();
+				}
+			});
+		}
+	}
+	
 	function clear(){
 		roomsLayer.clearSelection();
 		map.infoWindow.hide();
@@ -568,6 +607,7 @@
 			</select>
 			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; z-Index:1;">Report</button>
 			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; z-Index:1;">Clear</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; z-Index:1;">Print Report</button>
 
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
