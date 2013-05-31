@@ -364,6 +364,7 @@
 	function changeFloor(floorNum){
 		roomsLayer.setDefinitionExpression("FLOORKEY LIKE '%F" + floorNum + "'");
 		//dijit.byId("floorButton").set("label","Floor " + floorNum);
+		dojo.byId("floorButton").selectedIndex = floorNum - 1;
 		map.infoWindow.hide();
 	}
 
@@ -607,6 +608,26 @@
 		}
 	}
 	
+	function findRoom(roomNum){
+		//var roomQuery = new esri.tasks.Query();
+		//roomQuery.where = "LONGNAME = '" + roomNum + "'";
+		//roomsLayer.selectFeatures(roomQuery,esri.layers.FeatureLayer.SELECTION_NEW);
+		var query = new esri.tasks.Query();
+		query.where = "LONGNAME = '" + roomNum + "'";
+		
+		query.outFields = ["*"];
+		var floorQueryTask = new esri.tasks.QueryTask(roomsLayerURL);
+		floorQueryTask.execute(query,function(results){
+			floorkey = results.features[0].attributes["FLOORKEY"];
+			changeFloor(floorkey.substr(floorkey.length - 1,1));			
+			roomsLayer.selectFeatures(query,esri.layers.FeatureLayer.SELECTION_NEW,function(features){
+			  //zoom to the selected feature
+			  var roomExtent = features[0].geometry.getExtent().expand(5.0);
+			  map.setExtent(roomExtent);
+			});
+		});
+	}
+	
 	function clear(){
 		roomsLayer.clearSelection();
 		map.infoWindow.hide();
@@ -620,7 +641,6 @@
 	<body class="tundra">
 		
 		<div id="map" data-dojo-type="dojox/mobile/ContentPane" style="height:75%" data-dojo-props="label:'Map'">
-
 			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:15px; z-Index:1;">		
 				<option value="1">Floor 1</option>
 				<option value="2">Floor 2</option>
@@ -636,7 +656,7 @@
 			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; width:52px; z-Index:1;">Clear</button>
 			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">Print Report</button>
 			<button data-dojo-type="dojox.mobile.Button" onclick="exportCSV()" style="position:absolute; right:15px; top:225px; width:91px; z-Index:1;">Export CSV</button>
-
+			<input id="room" type="text" style="position:absolute; right:85px; top:265px; width:80px; z-Index:1;"><button data-dojo-type="dojox.mobile.Button" onclick="findRoom(dojo.byId('room').value)" style="position:absolute; right:15px; top:265px; width:60px; z-Index:1;">Search</button>
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
 				<div style="overflow:auto">
