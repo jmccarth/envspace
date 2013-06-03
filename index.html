@@ -18,7 +18,10 @@
 	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
 	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/common/domButtons.css">
 	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
+	
+	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/grid/resources/tundraGrid.css">
 	<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider','Accordion']"></script>
+	
     <link rel="stylesheet" type="text/css" href="css/layout.css"/>
 	
     <script type="text/javascript">
@@ -84,8 +87,11 @@
 	  "esri/layers/FeatureLayer",
 	  "esri/dijit/Popup",
 	  "esri/dijit/Legend",
+	  "esri/dijit/Print",
 	  "esri/dijit/AttributeInspector-all",
-	  "esri/tasks/GenerateRendererTask"
+	  "esri/tasks/GenerateRendererTask",
+	  "esri/tasks/PrintTask",
+	  "esri/tasks/LegendLayer"
 		],function(registry){
 				show = function(dlg){
 					registry.byId(dlg).show();
@@ -104,11 +110,14 @@
 	  var store; //holds data store for dojo data grid (report)
 	  var roomsLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/0";
 	  var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/0";
-
+		var printDijit;
+		
       function init() {
 		//Basemap layers
 		
 		//basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
+		
+		esri.config.defaults.io.proxyUrl = "http://env-gisdev1.uwaterloo.ca/proxy.ashx";
 		
 		basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer",
 			{displayLevels:[15,16,17,18,19]});
@@ -148,7 +157,8 @@
         roomsLayer = new esri.layers.FeatureLayer(roomsLayerURL,{
 			infoTemplate:template,
 			outFields:["*"],
-			mode:esri.layers.FeatureLayer.MODE_ONDEMAND
+			mode:esri.layers.FeatureLayer.MODE_ONDEMAND,
+			id:"Rooms"
 		});
 		
 		//define a selection symbol 
@@ -208,7 +218,14 @@
         dojo.connect(map, 'onLoad', function(map) {
           //resize the map when the browser resizes
           dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
+          /*printDijit = new esri.dijit.Print({
+          	map: map,
+          	url: "http://env-gisdev1.uwaterloo.ca:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+          },dojo.byId("printMapButton"));
+          printDijit.startup();*/
         });
+		
+		
 		
 		/*dojo.connect(map, 'onLayerAddResult', function(addedLayer){
 			alert(addedLayer);
@@ -628,6 +645,32 @@
 		});
 	}
 	
+	function printMap(){
+		var legendLayer = new esri.tasks.LegendLayer();
+		legendLayer.layerId = "Rooms";
+		
+		var params = new esri.tasks.PrintParameters();
+		params.map = map;
+		
+		var template = new esri.tasks.PrintTemplate();
+
+		template.format = "PDF";
+		template.layout = "Letter ANSI A Landscape";
+		var layoutOpts = {legendLayers:[legendLayer]};
+		template.layoutOptions = layoutOpts;
+		template.preserveScale = false;
+		
+		params.template = template;
+		
+		var printTask = new esri.tasks.PrintTask("http://env-gisdev1.uwaterloo.ca:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+		printTask.execute(params, function(result){
+			window.open(result.url);
+		},
+		function(errback){
+			alert(errback);
+		});
+	}
+	
 	function clear(){
 		roomsLayer.clearSelection();
 		map.infoWindow.hide();
@@ -657,6 +700,8 @@
 			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">Print Report</button>
 			<button data-dojo-type="dojox.mobile.Button" onclick="exportCSV()" style="position:absolute; right:15px; top:225px; width:91px; z-Index:1;">Export CSV</button>
 			<input id="room" type="text" style="position:absolute; right:85px; top:265px; width:80px; z-Index:1;"><button data-dojo-type="dojox.mobile.Button" onclick="findRoom(dojo.byId('room').value)" style="position:absolute; right:15px; top:265px; width:60px; z-Index:1;">Search</button>
+			<!--<div id="printMapButton" style="position:absolute; right:15px; top:305px; width:91px; z-Index:1;"></div>-->
+			<button data-dojo-type="dojox.mobile.Button" onclick="printMap()" style="position:absolute; right:15px; top:305px; width:91px; z-Index:1;">Print Map</button>
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
 				<div style="overflow:auto">
