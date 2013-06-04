@@ -1,690 +1,101 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7" />
-    <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
-      on iOS devices-->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    
-    <title>
-    </title>
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/tundra/tundra.css">
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css" />
-	
-	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/dijit/css/Popup.css'/>
-	<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
-	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/common/domButtons.css">
-	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
-	
-	<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/grid/resources/tundraGrid.css">
-	<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider','Accordion']"></script>
-	
-    <link rel="stylesheet" type="text/css" href="css/layout.css"/>
-	
-    <script type="text/javascript">
-      var djConfig = {
-        parseOnLoad: true
-      };
-    </script>
-	<style>
-		.mblSimpleDialogButton {
-		  margin: 7px 0 0;
-		  width: 262px;
-		  font-size: 17px;
-		  font-weight: bold;
-		  opacity: 0.95;
-		}
-		.mblSimpleDialogButton2l {
-		  float: left;
-		  width: 127px;
-		  margin: 7px 0 0;
-		  font-size: 17px;
-		  font-weight: bold;
-		  opacity: 0.95;
-		}
-		.mblSimpleDialogButton2r {
-		  float: right;
-		  width: 127px;
-		  margin: 7px 0 0;
-		  font-size: 17px;
-		  font-weight: bold;
-		  opacity: 0.95;
-		}
-		.mblSimpleDialog .mblProgressIndicator {
-		  position: relative;
-		  margin: 14px 0 7px;
-		  top: 0;
-		}
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=7" />
+		<!--The viewport meta tag is used to improve the presentation and behavior of the samples
+		on iOS devices-->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-	</style>
-    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.4">
-    </script>
-    <script type="text/javascript">
-		require(["dijit/dijit", // optimize: load dijit layer
-      "dijit/layout/BorderContainer",
-      "dijit/layout/ContentPane",
-	  "dijit/TitlePane",
-	  "dijit/form/CheckBox",
-	  "dijit/form/Select",
-	  "dijit/registry",
-	  "dijit/Menu",
-	  "dijit/Dialog",
-	  "dijit/Calendar",
-	  "dijit/form/DropDownButton",
-	  "dojox/grid/DataGrid",
-      "dojo/data/ItemFileReadStore",
-	  "dojox/layout/ExpandoPane",
-	  "dojox/mobile",
-	  "dojox/mobile/parser",
-	  "dojox/mobile/Button",
-	  "dojox/mobile/SimpleDialog",
-	  "dojox/mobile/Accordion",
-	  "dojox/mobile/ContentPane",
-      "esri/map",
-	  "esri/layers/FeatureLayer",
-	  "esri/dijit/Popup",
-	  "esri/dijit/Legend",
-	  "esri/dijit/Print",
-	  "esri/dijit/AttributeInspector-all",
-	  "esri/tasks/GenerateRendererTask",
-	  "esri/tasks/PrintTask",
-	  "esri/tasks/LegendLayer"
-		],function(registry){
-				show = function(dlg){
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css">
+		<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
+		<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/dijit/css/Popup.css'/>
+		<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
+		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/common/domButtons.css">
+		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
+
+		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/grid/resources/tundraGrid.css">
+		<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider','Accordion']"></script>
+
+		<script type="text/javascript" src="js/assignment.js"></script>
+		<script type="text/javascript" src="js/editing.js"></script>
+		<script type="text/javascript" src="js/export.js"></script>
+		<script type="text/javascript" src="js/helper.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/reporting.js"></script>
+		<script type="text/javascript" src="js/visualize.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/layout.css"/>
+
+		<script type="text/javascript">
+			var djConfig = {
+				parseOnLoad : true
+			};
+		</script>
+		<style>
+			.mblSimpleDialogButton {
+				margin: 7px 0 0;
+				width: 262px;
+				font-size: 17px;
+				font-weight: bold;
+				opacity: 0.95;
+			}
+			.mblSimpleDialogButton2l {
+				float: left;
+				width: 127px;
+				margin: 7px 0 0;
+				font-size: 17px;
+				font-weight: bold;
+				opacity: 0.95;
+			}
+			.mblSimpleDialogButton2r {
+				float: right;
+				width: 127px;
+				margin: 7px 0 0;
+				font-size: 17px;
+				font-weight: bold;
+				opacity: 0.95;
+			}
+			.mblSimpleDialog .mblProgressIndicator {
+				position: relative;
+				margin: 14px 0 7px;
+				top: 0;
+			}
+
+		</style>
+		<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.5"></script>
+		<script type="text/javascript">
+			require(["dijit/dijit", // optimize: load dijit layer
+			"dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane", "dijit/form/CheckBox", "dijit/form/Select", "dijit/registry", "dijit/Menu", "dijit/Dialog", "dijit/Calendar", "dijit/form/DropDownButton", "dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojox/layout/ExpandoPane", "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/Button", "dojox/mobile/SimpleDialog", "dojox/mobile/Accordion", "dojox/mobile/ContentPane", "esri/map", "esri/layers/FeatureLayer", "esri/dijit/Popup", "esri/dijit/Legend", "esri/dijit/Print", "esri/dijit/AttributeInspector-all", "esri/tasks/GenerateRendererTask", "esri/tasks/PrintTask", "esri/tasks/LegendLayer"], function(registry) {
+				show = function(dlg) {
 					registry.byId(dlg).show();
 				};
-				hide = function(dlg){
+				hide = function(dlg) {
 					registry.byId(dlg).hide();
 				};
-			}
-		);
-      
-	  
-      var map, roomsLayer, roomsUpdateLayer, basemap;
-	  var legend = null;
-	  var customLods = [];
-	  var loadCount = 0;
-	  var store; //holds data store for dojo data grid (report)
-	  var roomsLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/0";
-	  var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/0";
-		var printDijit;
-		
-      function init() {
-		//Basemap layers
-		
-		//basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer");
-		
-		esri.config.defaults.io.proxyUrl = "http://env-gisdev1.uwaterloo.ca/proxy.ashx";
-		
-		basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer",
-			{displayLevels:[15,16,17,18,19]});
-		
-		if(basemap.loaded){
-			addLods(basemap);
-		}
-		else{
-			dojo.connect(basemap,"onLoad",addLods);
-		}
-		
-		/*
-		ourbasemap = new esri.layers.ArcGISTiledMapServiceLayer("http://maps.uwaterloo.ca/ArcGIS/rest/services/mobile/uw_base/MapServer",
-			{displayLevels:[20,21]});
-		
-		if(ourbasemap.loaded){
-			addLods(ourbasemap);
-		}
-		else{
-			dojo.connect(ourbasemap,"onLoad",addLods);
-		}
-		*/
-		
-		//Rooms feature layer
-		
-		//create popup infotemplate
-		var template = new esri.InfoTemplate();
-		template.setTitle("Attributes of ${LONGNAME}");
-		template.setContent(
-			"Department ID: ${Department_ID}<br />" +
-			"Department Name: ${Department_Name}<br />" +
-			"Area (Assignable Sq. Ft.): ${Assignable_Square_Feet}<br />" +
-			"Usage (IAP): ${Function_ID_and_Name}<br />" +
-			"<button onclick='startEdit(\"${SPACEID}\")'>Edit</button>"
-		);
-		
-        roomsLayer = new esri.layers.FeatureLayer(roomsLayerURL,{
-			infoTemplate:template,
-			outFields:["*"],
-			mode:esri.layers.FeatureLayer.MODE_ONDEMAND,
-			id:"Rooms"
-		});
-		
-		//define a selection symbol 
-        var highlightSymbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID,
-								new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
-								new dojo.Color([255,0,0]), 2),new dojo.Color([255,255,0,0.25]));
-        roomsLayer.setSelectionSymbol(highlightSymbol);
-		
-		dojo.connect(roomsLayer,"onClick",function(evt){
-			map.infoWindow.setFeatures([evt.graphic]);
-			map.infoWindow.show(evt.mapPoint);
-		});
-		
-		roomsUpdateLayer = new esri.layers.FeatureLayer(roomsUpdateLayerURL,{
-			outFields:["*"],
-			mode:esri.layers.FeatureLayer.MODE_ONDEMAND,
-			visible:false
-		});
-
-      }
-	  
-	  function startEdit(spaceid){
-		map.infoWindow.hide();
-		
-		var sQuery = new esri.tasks.Query();
-		sQuery.where = "SPACEID='" + spaceid + "'";
-		roomsUpdateLayer.selectFeatures(sQuery,esri.layers.FeatureLayer.SELECTION_NEW,function(results){
-			dijit.byId('editDialog').show();
-		},
-		function(err){
-			console.log(err);
-		});
-	  }
-	  
-	  function initMap(){
-		var initialExtent = new esri.geometry.Extent({
-          "xmin": -8966082.128405,
-          "ymin": 5383419.130605,
-          "xmax": -8965889.190495,
-          "ymax": 5383576.988895,
-          "spatialReference": {
-            "wkid": 102113
-          }
-        });
-		var popup= new esri.dijit.Popup(null,dojo.create("div"));
-        map = new esri.Map("map", {
-          extent: initialExtent,
-		  infoWindow:popup,
-		  lods: customLods,
-		  minZoom: 17,
-		  maxZoom: 20
-        });
-		/*map = new esri.Map("map", {
-          extent: initialExtent,
-		  infoWindow:popup
-        });*/
-        dojo.connect(map, 'onLoad', function(map) {
-          //resize the map when the browser resizes
-          dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
-          /*printDijit = new esri.dijit.Print({
-          	map: map,
-          	url: "http://env-gisdev1.uwaterloo.ca:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-          },dojo.byId("printMapButton"));
-          printDijit.startup();*/
-        });
-		
-		
-		
-		/*dojo.connect(map, 'onLayerAddResult', function(addedLayer){
-			alert(addedLayer);
-		})*/
-		
-		map.addLayer(basemap);
-		//map.addLayer(ourbasemap);
-		map.addLayer(roomsUpdateLayer);
-		map.addLayer(roomsLayer);
-		
-		
-		legend = new esri.dijit.Legend({
-			map:map,
-			layerInfos:[{layer:roomsLayer,title:'Rooms'}]
-		},"legendDiv");
-		legend.startup();
-		
-		if (roomsUpdateLayer.loaded){
-			createAttInspector();
-		}
-		else{
-			dojo.connect(roomsUpdateLayer,"onLoad",function(){
-				createAttInspector();
 			});
-		}
-		
-		changeFloor(1);
 
-		buildReportDialog();
-		symbolizeDefault();
-	  }
-	
-	function createAttInspector(){
-		var layerInfo = [{
-			'featureLayer':roomsUpdateLayer,
-			'showDeleteButton':false,
-			'fieldInfos':[
-				{'fieldName': 'LONGNAME','label':'Room Name','isEditable':false},
-				{'fieldName': 'Function_ID_and_Name','label':'Function','isEditable':true},
-				{'fieldName': 'Department_Name','label':'Department','isEditable':true}
-			]	
-		}];
-		
-		var attInspector = new esri.dijit.AttributeInspector(
-			{layerInfos:layerInfo},
-			"attrInsp"
-		);
-		
-		dojo.connect(attInspector,"onAttributeChange",function(feature,fieldName,newFieldValue){
-			feature.attributes[fieldName] = newFieldValue;
-			feature.getLayer().applyEdits(null,[feature],null);
-		});
-	}
-	
-	
-	//Fill array with levels of detail
-	function addLods(lyr) {
-		customLods = customLods.concat(lyr.tileInfo.lods);
-		loadCount++;
+			var map, roomsLayer, roomsUpdateLayer, basemap;
+			var legend = null;
+			var customLods = [];
+			var loadCount = 0;
+			var store;
+			//holds data store for dojo data grid (report)
+			var roomsLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/0";
+			var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/0";
 
-		if (loadCount === 1) {
-		  initMap();
-		}
-	}
-	/**
-		symbolizeByDepartment()
-		
-		Send a request off to the rooms layer to generate a unique values renderer based on the department name.
-		Build a colour ramp and apply it to the rooms layer, then refresh.
-	*/	
-	function symbolizeByDepartment(){
-		dojo.byId("legendDiv").hidden = false; //make sure legend is visible
-		var generateRenderer = new esri.tasks.GenerateRendererTask(roomsLayerURL);
-		var params = new esri.tasks.GenerateRendererParameters();
-		
-		var classDef = new esri.tasks.UniqueValueDefinition();
-		classDef.attributeField = "Department_Name";
-		classDef.baseSymbol = new esri.symbol.SimpleFillSymbol().setColor(new dojo.Color([255,0,0,0.5]));
-		var cRamp = new esri.tasks.AlgorithmicColorRamp();
-		cRamp.fromColor = dojo.colorFromHex("#0033ff");
-		cRamp.toColor = dojo.colorFromHex("#ff3300");
-		cRamp.algorithm = "hsv";
-		classDef.colorRamp = cRamp;
-		
-		params.classificationDefinition = classDef;
-		params.where = "1=1";
-		
-		generateRenderer.execute(params, function(renderer){
-			roomsLayer.setRenderer(renderer);
-			roomsLayer.refresh();
-			legend.refresh();
-		}, function(err){
-			console.log(err);
-		});
-	  }
-	
-	/**
-		symbolizeByFunction()
-		
-		Send a request off to the rooms layer to generate a unique values renderer based on the function name.
-		Build a colour ramp and apply it to the rooms layer, then refresh.
-	*/	
-	
-	function symbolizeByFunction(){
-		dojo.byId("legendDiv").hidden = false; //make sure legend is visible
-		var generateRenderer = new esri.tasks.GenerateRendererTask(roomsLayerURL);
-		var params = new esri.tasks.GenerateRendererParameters();
-		
-		var classDef = new esri.tasks.UniqueValueDefinition();
-		classDef.attributeField = "Function_ID_and_Name";
-		classDef.baseSymbol = new esri.symbol.SimpleFillSymbol().setColor(new dojo.Color([255,0,0,0.5]));
-		var cRamp = new esri.tasks.AlgorithmicColorRamp();
-		cRamp.fromColor = dojo.colorFromHex("#998ec3");
-		cRamp.toColor = dojo.colorFromHex("#f1a340");
-		cRamp.algorithm = "hsv";
-		classDef.colorRamp = cRamp;
-		
-		params.classificationDefinition = classDef;
-		params.where = "1=1";
-		
-		generateRenderer.execute(params, function(renderer){
-			roomsLayer.setRenderer(renderer);
-			roomsLayer.refresh();
-			legend.refresh();
-		}, function(err){
-			console.log(err);
-		});
-		
-	}
-	  
-	/**
-		symbolizeDefault()
-			
-		Create a basic single-symbol renderer to show the rooms.
-	*/
-	function symbolizeDefault(){
-		var symbol = new esri.symbol.SimpleFillSymbol().setColor(new dojo.Color([0,100,100]));
-		symbol.outline.setStyle(esri.symbol.SimpleLineSymbol.STYLE_NULL);
-		var renderer = new esri.renderer.SimpleRenderer(symbol);
-		roomsLayer.setRenderer(renderer);
-		roomsLayer.refresh();
-		legend.refresh();
-		dojo.byId("legendDiv").hidden = true; //hide legend when there's only one symbol
-	 }
-	  
-	/**
-		changeFloor()
-		
-		When called, change the visible floor by using a definition expression to filter out all rooms not on that floor
-		
-		BUG:Need to find a way to signal the caller that this function is done
-	*/
-	function changeFloor(floorNum){
-		roomsLayer.setDefinitionExpression("FLOORKEY LIKE '%F" + floorNum + "'");
-		//dijit.byId("floorButton").set("label","Floor " + floorNum);
-		dojo.byId("floorButton").selectedIndex = floorNum - 1;
-		map.infoWindow.hide();
-	}
+			//show map on load
+			dojo.addOnLoad(init);
+		</script>
+	</head>
 
-	  
-	/**
-		buildReportDialog()
-		
-		Gets list of unique departments and functions and populates the lists in the report dialog
-	*/
-	function buildReportDialog(){
-		// Get list of departments
-		allRoomsQuery = new esri.tasks.Query();
-		
-		allRoomsQuery.outFields = ["Department_Name","Function_ID_and_Name"];
-		allRoomsQuery.where = "OBJECTID >= 0";
-		
-		
-		var byDeptTask = new esri.tasks.QueryTask(roomsLayerURL);
-		byDeptTask.execute(allRoomsQuery,function(results){
-			var uniqueDepts = [];
-			var uniqueFuncs = [];
-			for (room in results.features){
-				if (dojo.indexOf(uniqueDepts,results.features[room].attributes["Department_Name"]) == -1){
-					uniqueDepts.push(results.features[room].attributes["Department_Name"]);
-				}
-				
-				if (dojo.indexOf(uniqueFuncs,results.features[room].attributes["Function_ID_and_Name"]) == -1){
-					uniqueFuncs.push(results.features[room].attributes["Function_ID_and_Name"]);
-				}
-			}
-			
-			//var dList = dijit.byId("deptList");
-			var dList = dojo.byId("deptList");
-			for (dept in uniqueDepts){
-				deptName = uniqueDepts[dept];
-				//var o = document.createElement("option");
-				//o.label = deptName;
-				//o.value = deptName;
-				//dList.add(o,null);
-				dojo.byId("deptList").options.add(new Option(deptName,deptName));
-				/*dList.addOption({
-					label:deptName,
-					value:deptName
-				});*/
-			}
-			
-			//var fList = dijit.byId("funcList");
-			for (func in uniqueFuncs){
-				funcName = uniqueFuncs[func];
-				dojo.byId("funcList").options.add(new Option(funcName,funcName));
-				/*fList.addOption({
-					label:funcName,
-					value:funcName
-				});*/
-			}
-		});
-	}
-	  
-	/** 
-		generateReport()
-	*/
-	  function generateReport(){
-		var deptName;
-		var funcName;
-		var showASF = dojo.byId("asfCheck").checked;
-		var deptChecked = dojo.byId("byDeptCheck").checked;
-		var funcChecked = dojo.byId("byFuncCheck").checked;
-		
-		if(deptChecked || funcChecked){
-			var byDept = new esri.tasks.Query();
-			var byDeptTask = new esri.tasks.QueryTask(roomsLayerURL);
-			
-			byDept.where = "";
-			
-			if (dojo.byId("byDeptCheck").checked){
-				deptName = dojo.byId("deptList").value;
-				byDept.where += "Department_Name = '" + deptName + "'";
-			}
-			if (dojo.byId("byFuncCheck").checked){
-				funcName = dojo.byId("funcList").value;
-				if (byDept.where.length > 0){
-					byDept.where += " AND Function_ID_and_Name = '" + funcName + "'";
-				}
-				else{
-					byDept.where += "Function_ID_and_Name = '" + funcName + "'";
-				}
-			}
-			
-			byDept.outFields = ["*"];
-			byDeptTask.execute(byDept,function(featureSet){
-				var totalSpace = 0;
-				for (room in featureSet.features){
-					totalSpace += featureSet.features[room].attributes.Assignable_Square_Feet
-				}
-				
-				var items = dojo.map(featureSet.features,function(feature){
-				  return feature.attributes;
-				});
-				var data = {
-				  identifier:"OBJECTID",
-				  items:items};
-				store = new dojo.data.ItemFileReadStore({data:data});
-				grid.setStore(store);
-				grid.setSortIndex(1,"true");
-				
-				if (showASF){
-					alert("Total Assignable Square Feet is:" + totalSpace);
-				}
-
-				
-			});
-			hide('reportDialog');
-		}
-		else{
-			alert("You must select at least one department or one function");
-		}
-	  }
-
-	  
-	function reportByFunctionResults(funcName){
-		var byFunc = new esri.tasks.Query();
-		var byFuncTask = new esri.tasks.QueryTask(roomsLayerURL);
-		
-		byFunc.where = "Function_ID_and_Name = '" + funcName + "'";
-		byFunc.outFields = ["*"];
-		byFuncTask.execute(byFunc,function(featureSet){
-			var totalSpace = 0;
-			for (room in featureSet.features){
-				totalSpace += featureSet.features[room].attributes.Assignable_Square_Feet
-			}
-			
-			var items = dojo.map(featureSet.features,function(feature){
-              return feature.attributes;
-            });
-            var data = {
-              identifier:"OBJECTID",
-              items:items};
-            store = new dojo.data.ItemFileReadStore({data:data});
-            grid.setStore(store);
-            grid.setSortIndex(1,"true");
-			
-			alert("Total Assignable Square Feet for " + funcName + " is:" + totalSpace);
-		});
-	}
-	  /* END TABULAR REPORT BY OWNER */
-	  
-	  function zoomTo(id){
-        var zBtn = "<a onClick=\"zoomRow('"+id+"')\">Show</a>";
-        return zBtn;
-	  }
-	  
-	  function zoomRow(id){
-        roomsLayer.clearSelection();
-        
-		var query = new esri.tasks.Query();
-        query.objectIds = [id];
-		query.outFields = ["*"];
-		
-		var floorQueryTask = new esri.tasks.QueryTask(roomsLayerURL);
-		
-		floorQueryTask.execute(query,function(results){
-			floorkey = results.features[0].attributes["FLOORKEY"];
-			changeFloor(floorkey.substr(floorkey.length - 1,1));			
-			roomsLayer.selectFeatures(query,esri.layers.FeatureLayer.SELECTION_NEW,function(features){
-			  //zoom to the selected feature
-			  var roomExtent = features[0].geometry.getExtent().expand(5.0);
-			  map.setExtent(roomExtent);
-			});
-		});
-      }
-	
-	function visualize(vizType){
-		if (vizType == "byDept"){
-			symbolizeByDepartment();
-		}
-		else if (vizType == "byFunc"){
-			symbolizeByFunction();
-		}
-		else if (vizType == "default"){
-			symbolizeDefault();
-		}
-	}
-	
-	function exportCSV(){
-		if (store == undefined){
-			alert("run a report first!");
-		}
-		else{
-			var csvoutput = "";
-			store.fetch({
-				onComplete: function(items){
-					//Open and populate an html document (pop-up)
-					
-					csvoutput += "Room,Department,Function,Assignable Square Feet\n";
-					//iterate over items to build the table content
-					dojo.forEach(items, function(item,index){
-						csvoutput += item.LONGNAME + "," + item.Department_Name + "," + item.Function_ID_and_Name + "," + item.Assignable_Square_Feet + "\n";
-					});
-					
-				}
-			});
-			location.href='data:application/download,' + encodeURIComponent(csvoutput);
-		}
-	}
-	
-	/**
-	 * printReport()
-	 * 
-	 * Creates and prints a copy of the table in the report datagrid
-	 * User must allow popups for this to work  
-	 */
-	function printReport(){
-		if (store == undefined){
-			alert("run a report first!");
-		}
-		else{
-			var win = window.open();
-			self.focus();
-			
-			store.fetch({
-				onComplete: function(items){
-					//Open and populate an html document (pop-up)
-					win.document.open();
-					win.document.write('<'+'html'+'><'+'head'+'><'+'style'+'>');
-			    	win.document.write('body, td { font-family: Verdana; font-size: 9pt;}');
-			    	win.document.write('<'+'/'+'style'+'><'+'/'+'head'+'><'+'body'+'>');
-					win.document.write("<table style='width:100%'><th>Room</th><th>Department</th><th>Function</th><th>Assignable Square Feet</th>");
-					
-					//iterate over items to build the table content
-					dojo.forEach(items, function(item,index){
-						win.document.write("<tr><td>" + item.LONGNAME + "</td><td>" + item.Department_Name + "</td><td>" + item.Function_ID_and_Name + "</td><td>" + item.Assignable_Square_Feet + "</td></tr>");
-					});
-					
-					win.document.write("</table>");
-					win.document.write('<'+'/'+'body'+'><'+'/'+'html'+'>');
-					win.document.close();
-					win.print();
-					win.close();
-				}
-			});
-		}
-	}
-	
-	function findRoom(roomNum){
-		//var roomQuery = new esri.tasks.Query();
-		//roomQuery.where = "LONGNAME = '" + roomNum + "'";
-		//roomsLayer.selectFeatures(roomQuery,esri.layers.FeatureLayer.SELECTION_NEW);
-		var query = new esri.tasks.Query();
-		query.where = "LONGNAME = '" + roomNum + "'";
-		
-		query.outFields = ["*"];
-		var floorQueryTask = new esri.tasks.QueryTask(roomsLayerURL);
-		floorQueryTask.execute(query,function(results){
-			floorkey = results.features[0].attributes["FLOORKEY"];
-			changeFloor(floorkey.substr(floorkey.length - 1,1));			
-			roomsLayer.selectFeatures(query,esri.layers.FeatureLayer.SELECTION_NEW,function(features){
-			  //zoom to the selected feature
-			  var roomExtent = features[0].geometry.getExtent().expand(5.0);
-			  map.setExtent(roomExtent);
-			});
-		});
-	}
-	
-	function printMap(){
-		var legendLayer = new esri.tasks.LegendLayer();
-		legendLayer.layerId = "Rooms";
-		
-		var params = new esri.tasks.PrintParameters();
-		params.map = map;
-		
-		var template = new esri.tasks.PrintTemplate();
-
-		template.format = "PDF";
-		template.layout = "Letter ANSI A Landscape";
-		var layoutOpts = {legendLayers:[legendLayer]};
-		template.layoutOptions = layoutOpts;
-		template.preserveScale = false;
-		
-		params.template = template;
-		
-		var printTask = new esri.tasks.PrintTask("http://env-gisdev1.uwaterloo.ca:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
-		printTask.execute(params, function(result){
-			window.open(result.url);
-		},
-		function(errback){
-			alert(errback);
-		});
-	}
-	
-	function clear(){
-		roomsLayer.clearSelection();
-		map.infoWindow.hide();
-	}
-	
-      //show map on load 
-      dojo.addOnLoad(init);
-    </script>
-  </head>
-  
 	<body class="tundra">
-		
+
 		<div id="map" data-dojo-type="dojox/mobile/ContentPane" style="height:75%" data-dojo-props="label:'Map'">
-			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:15px; z-Index:1;">		
+			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:15px; z-Index:1;">
 				<option value="1">Floor 1</option>
 				<option value="2">Floor 2</option>
 				<option value="3">Floor 3</option>
@@ -695,13 +106,25 @@
 				<option value="byDept">Symbolize By Department</option>
 				<option value="byFunc">Symbolize By Function</option>
 			</select>
-			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; width:60px; z-Index:1;">Report</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; width:52px; z-Index:1;">Clear</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">Print Report</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="exportCSV()" style="position:absolute; right:15px; top:225px; width:91px; z-Index:1;">Export CSV</button>
-			<input id="room" type="text" style="position:absolute; right:85px; top:265px; width:80px; z-Index:1;"><button data-dojo-type="dojox.mobile.Button" onclick="findRoom(dojo.byId('room').value)" style="position:absolute; right:15px; top:265px; width:60px; z-Index:1;">Search</button>
-			<!--<div id="printMapButton" style="position:absolute; right:15px; top:305px; width:91px; z-Index:1;"></div>-->
-			<button data-dojo-type="dojox.mobile.Button" onclick="printMap()" style="position:absolute; right:15px; top:305px; width:91px; z-Index:1;">Print Map</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; width:60px; z-Index:1;">
+				Report
+			</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; width:52px; z-Index:1;">
+				Clear
+			</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">
+				Print Report
+			</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="exportCSV()" style="position:absolute; right:15px; top:225px; width:91px; z-Index:1;">
+				Export CSV
+			</button>
+			<input id="room" type="text" style="position:absolute; right:85px; top:265px; width:80px; z-Index:1;">
+			<button data-dojo-type="dojox.mobile.Button" onclick="findRoom(dojo.byId('room').value)" style="position:absolute; right:15px; top:265px; width:60px; z-Index:1;">
+				Search
+			</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="printMap()" style="position:absolute; right:15px; top:305px; width:91px; z-Index:1;">
+				Print Map
+			</button>
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
 				<div style="overflow:auto">
@@ -709,9 +132,9 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div data-dojo-type="dojox/mobile/Accordion" style="height:25%">
-			<div data-dojo-type="dojox/mobile/ContentPane" style="height:100%" selected="true" data-dojo-props="label:'Report'">						
+			<div data-dojo-type="dojox/mobile/ContentPane" style="height:100%" selected="true" data-dojo-props="label:'Report'">
 				<table data-dojo-type="dojox.grid.DataGrid" id="grid" jsid="grid" style="font-size: 12px;">
 					<thead>
 						<tr>
@@ -724,33 +147,33 @@
 					</thead>
 				</table>
 			</div>
-		</div>		
+		</div>
 
-
-		
 		<div id="editDialog" data-dojo-type="dijit.Dialog" data-dojo-id="editDialog" title="Edit Feature" style="width:500px;height:300px">
 			<div id="attrInsp"></div>
 		</div>
-		
+
 		<div id="reportDialog" data-dojo-type="dojox.mobile.SimpleDialog" data-dojo-props="closeButton:true">
-			<div class="mblSimpleDialogTitle">Generate a Report</div>
+			<div class="mblSimpleDialogTitle">
+				Generate a Report
+			</div>
 			<input type="checkbox" id="byDeptCheck" checked onclick='dojo.byId("deptList").disabled = !dojo.byId("byDeptCheck").checked'/>
 			<span class="mblSimpleDialogText">By Department</span>
-			<select id="deptList" style="width:90%">
-			</select>
+			<select id="deptList" style="width:90%"></select>
 			<br />
-			<br />			
+			<br />
 			<input type="checkbox" id="byFuncCheck" checked onclick='dojo.byId("funcList").disabled = !dojo.byId("byFuncCheck").checked'/>
 			<span class="mblSimpleDialogText">By Function</span>
-			<select id="funcList" style="width:90%">
-			</select>
+			<select id="funcList" style="width:90%"></select>
 			<br />
 			<br />
 			<input type="checkbox" id="asfCheck" checked />
 			<span class="mblSimpleDialogText">Show ASF Total?</span>
 			<br />
 			<br />
-			<button data-dojo-type="dojox.mobile.Button" onclick="generateReport()">Generate Report</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="generateReport()">
+				Generate Report
+			</button>
 		</div>
 		<div id="legendDialog" data-dojo-type="dijit.Dialog" data-dojo-id="legendDialog"></div>
 
