@@ -11,13 +11,16 @@ function init() {
 		dojo.connect(basemap, "onLoad", addLods);
 	}
 
-	//create popup infotemplate
-	var template = new esri.InfoTemplate();
-	template.setTitle("Attributes of ${LONGNAME}");
-	template.setContent("Department ID: ${Department_ID}<br />" + "Department Name: ${Department_Name}<br />" + "Area (Assignable Sq. Ft.): ${Assignable_Square_Feet}<br />" + "Usage (IAP): ${Function_ID_and_Name}<br />" + "<button onclick='startEdit(\"${SPACEID}\")'>Edit</button>" + "<button onclick='showAssignment(\"${OBJECTID}\")'>Show Assignment</button>");
+	
 
+	//create popup infotemplate
+	//var template = new esri.InfoTemplate();
+	//template.setTitle("Attributes of ${LONGNAME}");
+	//template.setContent("Department ID: ${Department_ID}<br />" + "Department Name: ${Department_Name}<br />" + "Area (Assignable Sq. Ft.): ${Assignable_Square_Feet}<br />" + "Usage (IAP): ${Function_ID_and_Name}<br />" + "<button onclick='startEdit(\"${SPACEID}\")'>Edit</button>" + "<button onclick='showAssignment(\"${OBJECTID}\")'>Show Assignment</button>");
+	//template.setContent("<ul id='popupTabBar' data-dojo-type='dojox/mobile/TabBar' data-dojo-props='barType:\"standardTab\"'><li data-dojo-type='dojox/mobile/TabBarButton' data-dojo-props='selected:true'>New</li><li data-dojo-type='dojox/mobile/TabBarButton'>What's Hot</li><li data-dojo-type='dojox/mobile/TabBarButton'>Genius</li></ul>");
+	
 	roomsLayer = new esri.layers.FeatureLayer(roomsLayerURL, {
-		infoTemplate : template,
+		//infoTemplate : template,
 		outFields : ["*"],
 		mode : esri.layers.FeatureLayer.MODE_ONDEMAND,
 		id : "Rooms"
@@ -28,8 +31,9 @@ function init() {
 	roomsLayer.setSelectionSymbol(highlightSymbol);
 
 	dojo.connect(roomsLayer, "onClick", function(evt) {
-		map.infoWindow.setFeatures([evt.graphic]);
-		map.infoWindow.show(evt.mapPoint);
+		//map.infoWindow.setFeatures([evt.graphic]);
+		//map.infoWindow.show(evt.mapPoint);
+		populateRoomInfoDialog(evt.graphic.attributes.SPACEID);
 	});
 
 	roomsUpdateLayer = new esri.layers.FeatureLayer(roomsUpdateLayerURL, {
@@ -50,14 +54,18 @@ function initMap() {
 			"wkid" : 102113
 		}
 	});
-	var popup = new esri.dijit.Popup(null, dojo.create("div"));
+	//var popup = new esri.dijit.Popup(null, dojo.create("div"));
+	//var popup = new esri.dijit.PopupMobile(null,dojo.create("div"));
 	map = new esri.Map("map", {
 		extent : initialExtent,
-		infoWindow : popup,
+		//infoWindow : popup,
 		lods : customLods,
 		minZoom : 17,
 		maxZoom : 20
 	});
+	
+	
+    
 
 	dojo.connect(map, 'onLoad', function(map) {
 		//resize the map when the browser resizes
@@ -78,11 +86,21 @@ function initMap() {
 	}, "legendDiv");
 	legend.startup();
 
+	if (roomsLayer.loaded){
+		createIAPAttInspector();
+	} else{
+		dojo.connect(roomsLayer,"onLoad",function(){
+			createIAPAttInspector();	
+		});
+	}
+
 	if (roomsUpdateLayer.loaded) {
-		createAttInspector();
+		createENVAttInspector();
+		//createEditAttInspector();
 	} else {
 		dojo.connect(roomsUpdateLayer, "onLoad", function() {
-			createAttInspector();
+			createENVAttInspector();
+			//createEditAttInspector();
 		});
 	}
 

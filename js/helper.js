@@ -1,7 +1,4 @@
 function findRoom(roomNum) {
-	//var roomQuery = new esri.tasks.Query();
-	//roomQuery.where = "LONGNAME = '" + roomNum + "'";
-	//roomsLayer.selectFeatures(roomQuery,esri.layers.FeatureLayer.SELECTION_NEW);
 	var query = new esri.tasks.Query();
 	query.where = "LONGNAME = '" + roomNum + "'";
 

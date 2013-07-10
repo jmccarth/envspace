@@ -13,12 +13,13 @@
 		<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css">
 		<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
 		<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/dijit/css/Popup.css'/>
+		<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/dijit/css/PopupMobile.css'/>
 		<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dojox/layout/resources/ExpandoPane.css'/>
 		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/common/domButtons.css">
 		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/themes/iphone/iphone-compat.css">
 
 		<link rel="stylesheet" href="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/grid/resources/tundraGrid.css">
-		<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider','Accordion']"></script>
+		<script type="text/javascript" src="http://download.dojotoolkit.org/release-1.8.3/dojo-release-1.8.3/dojox/mobile/deviceTheme.js" data-dojo-config="mblThemeFiles: ['base','SimpleDialog','Button','Slider','Accordion','TabBar']"></script>
 
 		<script type="text/javascript" src="js/assignment.js"></script>
 		<script type="text/javascript" src="js/editing.js"></script>
@@ -64,12 +65,21 @@
 				margin: 14px 0 7px;
 				top: 0;
 			}
-
+			
+			.esriAttributeInspector{
+				padding-top: 5px;
+			}
+			
+			.esriAttributeInspector .atiField{
+				color: black;
+			}
+			
+		
 		</style>
 		<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.5"></script>
 		<script type="text/javascript">
 			require(["dijit/dijit", // optimize: load dijit layer
-			"dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane", "dijit/form/CheckBox", "dijit/form/Select", "dijit/registry", "dijit/Menu", "dijit/Dialog", "dijit/Calendar", "dijit/form/DropDownButton", "dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojox/layout/ExpandoPane", "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/Button", "dojox/mobile/SimpleDialog", "dojox/mobile/Accordion", "dojox/mobile/ContentPane", "esri/map", "esri/layers/FeatureLayer", "esri/dijit/Popup", "esri/dijit/Legend", "esri/dijit/Print", "esri/dijit/AttributeInspector-all", "esri/tasks/GenerateRendererTask", "esri/tasks/PrintTask", "esri/tasks/LegendLayer"], function(registry) {
+			"dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane", "dijit/form/CheckBox", "dijit/form/Select", "dijit/registry", "dijit/Menu", "dijit/Dialog", "dijit/Calendar", "dijit/form/DropDownButton", "dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojox/layout/ExpandoPane", "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/Button", "dojox/mobile/SimpleDialog", "dojox/mobile/Accordion", "dojox/mobile/ContentPane", "dojox/mobile/Heading", "dojox/mobile/TabBar", "esri/map", "esri/layers/FeatureLayer", "esri/dijit/Popup", "esri/dijit/Legend", "esri/dijit/InfoWindowLite", "esri/dijit/Print", "esri/dijit/PopupMobile", "esri/dijit/AttributeInspector-all", "esri/tasks/GenerateRendererTask", "esri/tasks/PrintTask", "esri/tasks/LegendLayer"], function(registry) {
 				show = function(dlg) {
 					registry.byId(dlg).show();
 				};
@@ -85,7 +95,7 @@
 			var store;
 			//holds data store for dojo data grid (report)
 			var roomsLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/0";
-			var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/0";
+			var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/1";
 
 			//show map on load
 			dojo.addOnLoad(init);
@@ -93,6 +103,7 @@
 	</head>
 
 	<body class="tundra">
+		
 
 		<div id="map" data-dojo-type="dojox/mobile/ContentPane" style="height:75%" data-dojo-props="label:'Map'">
 			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:15px; z-Index:1;">
@@ -149,8 +160,25 @@
 			</div>
 		</div>
 
-		<div id="editDialog" data-dojo-type="dijit.Dialog" data-dojo-id="editDialog" title="Edit Feature" style="width:500px;height:300px">
-			<div id="attrInsp"></div>
+		<div id="editDialog" data-dojo-type="dojox.mobile.SimpleDialog" data-dojo-id="editDialog" title="Edit Feature" style="width:500px;height:300px" data-dojo-props="closeButton:true">
+			
+		</div>
+
+		<div id="roomInfoDialog" data-dojo-type="dojox/mobile/SimpleDialog" data-dojo-id="roomInfoDialog" title="Room Info" style="width:500px;height:300px" data-dojo-props="closeButton:true">
+			<ul data-dojo-type="dojox/mobile/TabBar" data-dojo-props='barType:"standardTab"'>
+			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='selected:true,moveTo:"iapView"'>IAP Data</li>
+			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='moveTo:"envView"'>ENV Data</li>
+			  <li data-dojo-type="dojox/mobile/TabBarButton">Researchers</li>
+			  <li data-dojo-type="dojox/mobile/TabBarButton">Occupants</li>
+			</ul>
+			<div id='iapView' dojoType="dojox.mobile.View" selected="true">
+				<div id="iapAttrInsp" style="color:black"></div>
+			</div>
+			<div id='envView' dojoType="dojox.mobile.View">
+				<!--<div id="envAttrInsp" style="color:black"></div>-->
+				<button data-dojo-type="dojox.mobile.Button" id="editRecord" label="Edit" onclick="switchAttInspector()"></button>
+				<button data-dojo-type="dojox.mobile.Button" hidden=true id="saveEdits" label="Save" onclick="applyEdits()"></button>
+			</div>
 		</div>
 
 		<div id="reportDialog" data-dojo-type="dojox.mobile.SimpleDialog" data-dojo-props="closeButton:true">
