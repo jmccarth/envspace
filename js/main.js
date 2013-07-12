@@ -34,6 +34,7 @@ function init() {
 		//map.infoWindow.setFeatures([evt.graphic]);
 		//map.infoWindow.show(evt.mapPoint);
 		populateRoomInfoDialog(evt.graphic.attributes.SPACEID);
+		populateResearcherView(evt.graphic.attributes.SPACEID);
 	});
 
 	roomsUpdateLayer = new esri.layers.FeatureLayer(roomsUpdateLayerURL, {

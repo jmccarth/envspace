@@ -28,6 +28,7 @@
 		<script type="text/javascript" src="js/main.js"></script>
 		<script type="text/javascript" src="js/reporting.js"></script>
 		<script type="text/javascript" src="js/visualize.js"></script>
+		<script type="text/javascript" src="js/research.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="css/layout.css"/>
 
@@ -96,6 +97,7 @@
 			//holds data store for dojo data grid (report)
 			var roomsLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/0";
 			var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/1";
+			var researcherSpaceURL = "http://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/2"; 
 
 			//show map on load
 			dojo.addOnLoad(init);
@@ -168,16 +170,20 @@
 			<ul data-dojo-type="dojox/mobile/TabBar" data-dojo-props='barType:"standardTab"'>
 			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='selected:true,moveTo:"iapView"'>IAP Data</li>
 			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='moveTo:"envView"'>ENV Data</li>
-			  <li data-dojo-type="dojox/mobile/TabBarButton">Researchers</li>
+			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='moveTo:"researcherView"'>Researchers</li>
 			  <li data-dojo-type="dojox/mobile/TabBarButton">Occupants</li>
 			</ul>
 			<div id='iapView' dojoType="dojox.mobile.View" selected="true">
 				<div id="iapAttrInsp" style="color:black"></div>
 			</div>
 			<div id='envView' dojoType="dojox.mobile.View">
-				<!--<div id="envAttrInsp" style="color:black"></div>-->
 				<button data-dojo-type="dojox.mobile.Button" id="editRecord" label="Edit" onclick="switchAttInspector()"></button>
 				<button data-dojo-type="dojox.mobile.Button" hidden=true id="saveEdits" label="Save" onclick="applyEdits()"></button>
+			</div>
+			<div id='researcherView' dojoType="dojox.mobile.View">
+				<ul id="resList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
+					
+				</ul>
 			</div>
 		</div>
 
