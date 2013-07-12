@@ -164,3 +164,17 @@ function zoomRow(id) {
 		});
 	});
 }
+
+function showSelectedRows(){
+	var selRows = grid.selection.getSelected();
+	var ids = []
+	var sQuery = new esri.tasks.Query();
+	var whereClause = "";
+	for (r in selRows){
+		whereClause += "SPACEID = '" + selRows[r].SPACEID[0] + "' OR "
+	}
+	sQuery.where = whereClause.substring(0,whereClause.length - 3);
+	roomsLayer.selectFeatures(sQuery,esri.layers.FeatureLayer.SELECTION_NEW,function(results){
+		alert(results);
+	});
+}

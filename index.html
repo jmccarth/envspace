@@ -99,6 +99,8 @@
 			var roomsUpdateLayerURL = "https://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace_edit/FeatureServer/1";
 			var researcherSpaceURL = "http://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/2";
 			var researchersURL = "http://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/1"; 
+			var occupantSpaceURL = "http://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/4";
+			var occupantsURL = "http://services1.arcgis.com/DwLTn0u9VBSZvUPe/arcgis/rest/services/envspace/FeatureServer/3";
 
 			//show map on load
 			dojo.addOnLoad(init);
@@ -142,6 +144,9 @@
 			<button data-dojo-type="dojox.mobile.Button" onclick="showResearchers()" style="position:absolute; right:15px; top:345px; width:141px; z-Index:1;">
 				Show Researchers
 			</button>
+			<button data-dojo-type="dojox.mobile.Button" onclick="showOccupants()" style="position:absolute; right:15px; top:385px; width:141px; z-Index:1;">
+				Show Occupants
+			</button>
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
 				<div style="overflow:auto">
@@ -171,26 +176,28 @@
 		</div>
 		
 		<div id="researcherDialog" data-dojo-type="dojox.mobile.SimpleDialog" data-dojo-id="researcherDialog" title="Researchers" style="width:250px;height:200px" data-dojo-props="closeButton:true">
-			
-			
-			
-			<select id="researcherList" size="7" style="width:100px">
-					
-			</select>
-			
-			
-			
-			<select id="researcherSpaces" size="7" style="width:100px" onChange="dojo.byId('showSpacesBtn').disabled = false;">
-					
-			</select>
+			<select id="researcherList" size="7" style="width:100px"></select>
+			<select id="researcherSpaces" size="7" style="width:100px" onChange="dojo.byId('showSpacesBtn').disabled = false;"></select>
 			<div>
-			<button data-dojo-type="dojox.mobile.Button" onclick="listResearcherSpaces(dojo.byId('researcherList').value)">
-				List Spaces
-			</button>
-			
-			<button id="showSpacesBtn" data-dojo-type="dojox.mobile.Button" onclick="findRoomBySpaceID(dojo.byId('researcherSpaces').value);hide('researcherDialog');">
-				Show Space
-			</button>
+				<button data-dojo-type="dojox.mobile.Button" onclick="listResearcherSpaces(dojo.byId('researcherList').value)">
+					List Spaces
+				</button>
+				<button id="showSpacesBtn" data-dojo-type="dojox.mobile.Button" onclick="findRoomBySpaceID(dojo.byId('researcherSpaces').value);hide('researcherDialog');">
+					Show Space
+				</button>
+			</div>
+		</div>
+		
+		<div id="occupantDialog" data-dojo-type="dojox.mobile.SimpleDialog" data-dojo-id="occupantDialog" title="Occupants" style="width:250px;height:200px" data-dojo-props="closeButton:true">
+			<select id="occupantList" size="7" style="width:100px"></select>
+			<select id="occupantSpaces" size="7" style="width:100px" onChange="dojo.byId('showSpacesOccBtn').disabled = false;"></select>
+			<div>
+				<button data-dojo-type="dojox.mobile.Button" onclick="listOccupantSpaces(dojo.byId('occupantList').value)">
+					List Spaces
+				</button>
+				<button id="showSpacesOccBtn" data-dojo-type="dojox.mobile.Button" onclick="findRoomBySpaceID(dojo.byId('occupantSpaces').value);hide('occupantDialog');">
+					Show Space
+				</button>
 			</div>
 		</div>
 
@@ -199,7 +206,7 @@
 			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='selected:true,moveTo:"iapView"'>IAP Data</li>
 			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='moveTo:"envView"'>ENV Data</li>
 			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='moveTo:"researcherView"'>Researchers</li>
-			  <li data-dojo-type="dojox/mobile/TabBarButton">Occupants</li>
+			  <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props='moveTo:"occupantView"'>Occupants</li>
 			</ul>
 			<div id='iapView' dojoType="dojox.mobile.View" selected="true">
 				<div id="iapAttrInsp" style="color:black"></div>
@@ -210,6 +217,11 @@
 			</div>
 			<div id='researcherView' dojoType="dojox.mobile.View">
 				<ul id="resList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
+					
+				</ul>
+			</div>
+			<div id='occupantView' dojoType="dojox.mobile.View">
+				<ul id="occList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
 					
 				</ul>
 			</div>
