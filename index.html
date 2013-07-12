@@ -10,6 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
 		<title></title>
+		<link href="css/menu_assets/styles.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/dojo/dijit/themes/tundra/tundra.css">
 		<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/css/esri.css" />
 		<link rel="stylesheet" type='text/css' href='http://serverapi.arcgisonline.com/jsapi/arcgis/3.5/js/esri/dijit/css/Popup.css'/>
@@ -108,51 +109,51 @@
 	</head>
 
 	<body class="tundra">
-		
-
+		<div id='cssmenu'>
+			<ul>
+			   <li class='has-sub'><a href='#'><span>Vizualize</span></a>
+			   		<ul>
+			   			<li class='has-sub'><a href='#'><span>Symbology</span></a>
+			   				<ul>
+			   					<li><a href='#' onclick="visualize('default')"><span>Default</span></a></li>
+			   					<li><a href='#' onclick="visualize('byFunc')"><span>By Function</span></a></li>
+			   					<li><a href='#' onclick="visualize('byDept')"><span>By Department</span></a></li>
+			   				</ul>
+			   			</li>
+			   			<li><a href='#' onclick="printMap()"><span>Print Map</span></a></li>
+			   		</ul>
+			   </li>
+			   <li class='has-sub'><a href='#'><span>Report</span></a>
+			   		<ul>
+			   			<li><a href='#' onclick="show('reportDialog')"><span>Generate Report</span></a></li>
+			   			<li><a href='#' onclick="printReport()"><span>Print Report</span></a></li>
+			   			<li><a href='#' onclick="exportCSV()"><span>Export Report to CSV</span></a></li>
+			   			<li><a href='#' onclick="showSelectedRows()"><span>Filter Map by Report</span></a></li>
+			   			<li><a href='#' onclick="changeFloor(dojo.byId('floorButton').value)"><span>Clear Filter</span></a></li>
+			   		</ul>
+			   </li>
+			   <li class='has-sub'><a href='#'><span>Assignment</span></a>
+			   		<ul>
+			   			<li><a href='#' onclick="showResearchers()"><span>Researchers</span></a></li>
+			   			<li><a href='#' onclick="showOccupants()"><span>Occupants</span></a></li>
+			   		</ul>
+			   </li>
+			   <li class='has-sub'><a href='#'><span>Search</span></a>
+			   		<ul>
+			   			<li><a><input id="room" type="text"><button data-dojo-type="dojox.mobile.Button" onclick="findRoom(dojo.byId('room').value)">Search</button></a></li>
+			   		</ul>
+			   </li>
+			   <li><a href='#' onclick="clearSelection()"><span>Clear</span></a></li>
+			</ul>
+		</div>
 		<div id="map" data-dojo-type="dojox/mobile/ContentPane" style="height:75%" data-dojo-props="label:'Map'">
-			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:15px; z-Index:1;">
+			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:75px; z-Index:1;">
 				<option value="1">Floor 1</option>
 				<option value="2">Floor 2</option>
 				<option value="3">Floor 3</option>
 				<option value="4">Floor 4</option>
 			</select>
-			<select onChange="visualize(this.value)" style="position:absolute; right:15px; top:55px; z-Index:1;">
-				<option value="default">Symbolize Default</option>
-				<option value="byDept">Symbolize By Department</option>
-				<option value="byFunc">Symbolize By Function</option>
-			</select>
-			<button data-dojo-type="dojox.mobile.Button" onclick="show('reportDialog')" style="position:absolute; right:15px; top:95px; width:60px; z-Index:1;">
-				Report
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="clear()" style="position:absolute; right:15px; top:140px; width:52px; z-Index:1;">
-				Clear
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="printReport()" style="position:absolute; right:15px; top:185px; width:91px; z-Index:1;">
-				Print Report
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="exportCSV()" style="position:absolute; right:15px; top:225px; width:91px; z-Index:1;">
-				Export CSV
-			</button>
-			<input id="room" type="text" style="position:absolute; right:85px; top:265px; width:80px; z-Index:1;">
-			<button data-dojo-type="dojox.mobile.Button" onclick="findRoom(dojo.byId('room').value)" style="position:absolute; right:15px; top:265px; width:60px; z-Index:1;">
-				Search
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="printMap()" style="position:absolute; right:15px; top:305px; width:91px; z-Index:1;">
-				Print Map
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="showResearchers()" style="position:absolute; right:15px; top:345px; width:141px; z-Index:1;">
-				Show Researchers
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="showOccupants()" style="position:absolute; right:15px; top:385px; width:141px; z-Index:1;">
-				Show Occupants
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="showSelectedRows()" style="position:absolute; right:15px; top:425px; width:141px; z-Index:1;">
-				Filter by Report
-			</button>
-			<button data-dojo-type="dojox.mobile.Button" onclick="changeFloor(dojo.byId('floorButton').value)" style="position:absolute; right:15px; top:465px; width:141px; z-Index:1;">
-				Clear Filter
-			</button>
+			
 
 			<div style="position:absolute; left:20px; bottom:230px; z-Index:1; height:25%; width: 200px; overflow:auto" title="Legend">
 				<div style="overflow:auto">

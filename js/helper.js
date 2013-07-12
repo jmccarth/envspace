@@ -32,7 +32,7 @@ function findRoomBySpaceID(spaceid) {
 	});
 }
 
-function clear() {
+function clearSelection() {
 	roomsLayer.clearSelection();
 	map.infoWindow.hide();
 }
