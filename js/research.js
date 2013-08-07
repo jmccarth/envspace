@@ -1,6 +1,5 @@
 function populateResearcherView(spaceid){
-	var rList = dijit.byId("resList");
-	rList.destroyDescendants();
+	dojo.byId("resList").innerHTML = "" //TODO: probably a cleaner way to do this
 	//query researchers table for that room
 	var rQuery = new esri.tasks.Query();
 	rQuery.where = "SPACE_ID = '" + spaceid + "'";
@@ -8,10 +7,8 @@ function populateResearcherView(spaceid){
 	var rQueryTask = new esri.tasks.QueryTask(researcherSpaceURL);
 	rQueryTask.execute(rQuery,function(results){
 		for (f in results.features){
-			var lItem = new dojox.mobile.ListItem({
-				label:results.features[f].attributes.RESEARCHER
-			});
-			rList.addChild(lItem);
+			rName = results.features[f].attributes.RESEARCHER
+			dojo.byId("resList").options.add(new Option(rName, rName));
 		}
 	});
 }
@@ -53,8 +50,7 @@ function listResearcherSpaces(userName){
 }
 
 function populateOccupantView(spaceid){
-	var rList = dijit.byId("occList");
-	rList.destroyDescendants();
+	dojo.byId("occList").innerHTML = "" //TODO: probably a cleaner way to do this
 	//query occupant table for that room
 	var rQuery = new esri.tasks.Query();
 	rQuery.where = "SPACE_ID = '" + spaceid + "'";
@@ -62,10 +58,9 @@ function populateOccupantView(spaceid){
 	var rQueryTask = new esri.tasks.QueryTask(occupantSpaceURL);
 	rQueryTask.execute(rQuery,function(results){
 		for (f in results.features){
-			var lItem = new dojox.mobile.ListItem({
-				label:results.features[f].attributes.OCCUPANT
-			});
-			rList.addChild(lItem);
+			
+			oName = results.features[f].attributes.OCCUPANT
+			dojo.byId("occList").options.add(new Option(oName, oName));
 		}
 	});
 }

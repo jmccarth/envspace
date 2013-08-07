@@ -81,7 +81,7 @@
 		<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.5"></script>
 		<script type="text/javascript">
 			require(["dijit/dijit", // optimize: load dijit layer
-			"dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane", "dijit/form/CheckBox", "dijit/form/Select", "dijit/registry", "dijit/Menu", "dijit/Dialog", "dijit/Calendar", "dijit/form/DropDownButton", "dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojox/layout/ExpandoPane", "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/Button", "dojox/mobile/SimpleDialog", "dojox/mobile/Accordion", "dojox/mobile/ContentPane", "dojox/mobile/Heading", "dojox/mobile/TabBar", "esri/map", "esri/layers/FeatureLayer", "esri/dijit/Popup", "esri/dijit/Legend", "esri/dijit/InfoWindowLite", "esri/dijit/Print", "esri/dijit/PopupMobile", "esri/dijit/AttributeInspector-all", "esri/tasks/GenerateRendererTask", "esri/tasks/PrintTask", "esri/tasks/LegendLayer"], function(registry) {
+			"dijit/MenuBar", "dijit/MenuBarItem", "dijit/PopupMenuBarItem", "dijit/DropDownMenu", "dijit/MenuItem", "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/TitlePane", "dijit/form/CheckBox", "dijit/form/Select", "dijit/registry", "dijit/Menu", "dijit/Dialog", "dijit/Calendar", "dijit/form/DropDownButton", "dojox/grid/DataGrid", "dojo/data/ItemFileReadStore", "dojox/layout/ExpandoPane", "dojox/mobile", "dojox/mobile/parser", "dojox/mobile/Button", "dojox/mobile/SimpleDialog", "dojox/mobile/Accordion", "dojox/mobile/ContentPane", "dojox/mobile/Heading", "dojox/mobile/TabBar", "esri/map", "esri/layers/FeatureLayer", "esri/dijit/Popup", "esri/dijit/Legend", "esri/dijit/InfoWindowLite", "esri/dijit/Print", "esri/dijit/PopupMobile", "esri/dijit/AttributeInspector-all", "esri/tasks/GenerateRendererTask", "esri/tasks/PrintTask", "esri/tasks/LegendLayer"], function(registry) {
 				show = function(dlg) {
 					registry.byId(dlg).show();
 				};
@@ -146,6 +146,9 @@
 			   <li><a href='#' onclick="clearSelection()"><span>Clear</span></a></li>
 			</ul>
 		</div>
+		
+		
+		
 		<div id="map" data-dojo-type="dojox/mobile/ContentPane" style="height:75%" data-dojo-props="label:'Map'">
 			<select id="floorButton" onChange="changeFloor(this.value)" style="position:absolute; right:15px; top:75px; z-Index:1;">
 				<option value="1">Floor 1</option>
@@ -223,14 +226,10 @@
 				<button data-dojo-type="dojox.mobile.Button" hidden=true id="saveEdits" label="Save" onclick="applyEdits()"></button>
 			</div>
 			<div id='researcherView' dojoType="dojox.mobile.View">
-				<ul id="resList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
-					
-				</ul>
+				<select id="resList" size="7" style="width:100px"></select>
 			</div>
 			<div id='occupantView' dojoType="dojox.mobile.View">
-				<ul id="occList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
-					
-				</ul>
+				<select id="occList" size="7" style="width:100px"></select>
 			</div>
 		</div>
 
