@@ -135,15 +135,31 @@ function createEditAttInspector() {
 	}, "envAttrInsp");
 	
 	var q = new esri.tasks.Query();
-	q.objectIds = [roomsUpdateLayer.getSelectedFeatures()[0].attributes.OBJECTID];
-	roomsUpdateLayer.selectFeatures(q,esri.layers.FeatureLayer.SELECTION_NEW, function(results){
-		updateFeature = results[0];
-	});
+	if (roomsUpdateLayer.getSelectedFeatures().length > 0){
+		q.objectIds = [roomsUpdateLayer.getSelectedFeatures()[0].attributes.OBJECTID];
+		roomsUpdateLayer.selectFeatures(q,esri.layers.FeatureLayer.SELECTION_NEW, function(results){
+			updateFeature = results[0];
+		});
+	}
+	else{
+		// There are no existing edits to this space, so create a new record (as a graphic) and set updateFeature to hold it
+		var g = new esri.Graphic(null,null,{SPACEID: roomsLayer.getSelectedFeatures()[0].attributes.SPACEID, Edit_Status: "New", Edited_By: "Web"});
+		roomsUpdateLayer.applyEdits([g],null,null,function(editResult){
+			resultOID = editResult[0].objectId;
+			var oidQuery = new esri.tasks.Query();
+			oidQuery.where = "OBJECTID=" + resultOID;
+			roomsUpdateLayer.selectFeatures(oidQuery,esri.layers.FeatureLayer.SELECTION_NEW,function(results){
+				updateFeature = results[0];
+			});
+		});
+		
+	}
 	
 	activeInspector = editAttInspector;
 
 	dojo.connect(editAttInspector, "onAttributeChange", function(feature, fieldName, newFieldValue) {
 		updateFeature.attributes[fieldName] = newFieldValue;
+		//updateFeature.attributes["Last_Edit_Date"] = Date();
 	});
 
 }
