@@ -159,7 +159,12 @@ function createEditAttInspector() {
 
 	dojo.connect(editAttInspector, "onAttributeChange", function(feature, fieldName, newFieldValue) {
 		updateFeature.attributes[fieldName] = newFieldValue;
-		//updateFeature.attributes["Last_Edit_Date"] = Date();
+		currDate = new Date();
+		dateString = currDate.getMonth() + 1;
+		dateString += "/" + currDate.getDate();
+		dateString += "/" + currDate.getFullYear() + " ";
+		dateString += currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds();
+		updateFeature.attributes["Last_Edit_Date"] = dateString;
 	});
 
 }
