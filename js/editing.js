@@ -44,11 +44,11 @@ function createIAPAttInspector() {
 			'label' : 'Space ID',
 			'isEditable' : false
 		}, {
-			'fieldName' : 'Function_ID_and_Name',
+			'fieldName' : 'iapdata_Function_ID_and_Name',
 			'label' : 'Function',
 			'isEditable' : false
 		}, {
-			'fieldName' : 'Department_Name',
+			'fieldName' : 'iapdata_Department_Name',
 			'label' : 'Department',
 			'isEditable' : false
 		}]

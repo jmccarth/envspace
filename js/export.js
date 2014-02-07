@@ -10,7 +10,7 @@ function exportCSV() {
 				csvoutput += "Room,Department,Function,Assignable Square Feet\n";
 				//iterate over items to build the table content
 				dojo.forEach(items, function(item, index) {
-					csvoutput += item.LONGNAME + "," + item.Department_Name + "," + item.Function_ID_and_Name + "," + item.Assignable_Square_Feet + "\n";
+					csvoutput += item.iapdata_LONGNAME + "," + item.iapdata_Department_Name + "," + item.iapdata_Function_ID_and_Name + "," + item.iapdata_Assignable_Square_Feet + "\n";
 				});
 
 			}
@@ -43,7 +43,7 @@ function printReport() {
 
 				//iterate over items to build the table content
 				dojo.forEach(items, function(item, index) {
-					win.document.write("<tr><td>" + item.LONGNAME + "</td><td>" + item.Department_Name + "</td><td>" + item.Function_ID_and_Name + "</td><td>" + item.Assignable_Square_Feet + "</td></tr>");
+					win.document.write("<tr><td>" + item.iapdata_LONGNAME + "</td><td>" + item.iapdata_Department_Name + "</td><td>" + item.iapdata_Function_ID_and_Name + "</td><td>" + item.iapdata_Assignable_Square_Feet + "</td></tr>");
 				});
 
 				win.document.write("</table>");

@@ -7,7 +7,7 @@ function buildReportDialog() {
 	// Get list of departments
 	allRoomsQuery = new esri.tasks.Query();
 
-	allRoomsQuery.outFields = ["Department_Name", "Function_ID_and_Name"];
+	allRoomsQuery.outFields = ["iapdata_Department_Name", "iapdata_Function_ID_and_Name"];
 	allRoomsQuery.where = "OBJECTID >= 0";
 
 	var byDeptTask = new esri.tasks.QueryTask(roomsLayerURL);
@@ -15,12 +15,12 @@ function buildReportDialog() {
 		var uniqueDepts = [];
 		var uniqueFuncs = [];
 		for (room in results.features) {
-			if (dojo.indexOf(uniqueDepts, results.features[room].attributes["Department_Name"]) == -1) {
-				uniqueDepts.push(results.features[room].attributes["Department_Name"]);
+			if (dojo.indexOf(uniqueDepts, results.features[room].attributes["iapdata_Department_Name"]) == -1) {
+				uniqueDepts.push(results.features[room].attributes["iapdata_Department_Name"]);
 			}
 
-			if (dojo.indexOf(uniqueFuncs, results.features[room].attributes["Function_ID_and_Name"]) == -1) {
-				uniqueFuncs.push(results.features[room].attributes["Function_ID_and_Name"]);
+			if (dojo.indexOf(uniqueFuncs, results.features[room].attributes["iapdata_Function_ID_and_Name"]) == -1) {
+				uniqueFuncs.push(results.features[room].attributes["iapdata_Function_ID_and_Name"]);
 			}
 		}
 
@@ -69,14 +69,14 @@ function generateReport() {
 
 		if (dojo.byId("byDeptCheck").checked) {
 			deptName = dojo.byId("deptList").value;
-			byDept.where += "Department_Name = '" + deptName + "'";
+			byDept.where += "iapdata_Department_Name = '" + deptName + "'";
 		}
 		if (dojo.byId("byFuncCheck").checked) {
 			funcName = dojo.byId("funcList").value;
 			if (byDept.where.length > 0) {
-				byDept.where += " AND Function_ID_and_Name = '" + funcName + "'";
+				byDept.where += " AND iapdata_Function_ID_and_Name = '" + funcName + "'";
 			} else {
-				byDept.where += "Function_ID_and_Name = '" + funcName + "'";
+				byDept.where += "iapdata_Function_ID_and_Name = '" + funcName + "'";
 			}
 		}
 
@@ -115,7 +115,7 @@ function reportByFunctionResults(funcName) {
 	var byFunc = new esri.tasks.Query();
 	var byFuncTask = new esri.tasks.QueryTask(roomsLayerURL);
 
-	byFunc.where = "Function_ID_and_Name = '" + funcName + "'";
+	byFunc.where = "iapdata_Function_ID_and_Name = '" + funcName + "'";
 	byFunc.outFields = ["*"];
 	byFuncTask.execute(byFunc, function(featureSet) {
 		var totalSpace = 0;
